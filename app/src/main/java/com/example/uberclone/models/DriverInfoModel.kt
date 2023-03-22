@@ -1,10 +1,11 @@
 package com.example.uberclone.models
 
 data class DriverInfoModel(
-    val firstName: String,
-    val lastName: String,
-    val phoneNumber: String,
-    val rating: Double
+    var firstName: String,
+    var lastName: String,
+    var phoneNumber: String,
+    var rating: Double,
+    var avatar: String
 ) {
-    constructor(): this("","","",0.0)
+    constructor(): this("","","",0.0,"")
 }

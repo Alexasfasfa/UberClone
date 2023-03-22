@@ -6,6 +6,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.Button
@@ -16,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.uberclone.models.DriverInfoModel
 import com.example.uberclone.ui.HomeActivity
 import com.example.uberclone.utils.Constants
+import com.example.uberclone.utils.UserUtils
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -23,6 +25,8 @@ import com.google.android.gms.auth.api.Auth
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.iid.FirebaseInstanceIdReceiver
+import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import java.util.*
@@ -85,6 +89,22 @@ class SplashScreenActivity : AppCompatActivity() {
         listener = FirebaseAuth.AuthStateListener { myFirebaseAuth ->
             val user = myFirebaseAuth.currentUser
             if (user != null) {
+
+                FirebaseMessaging.getInstance().token
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val token = task.result
+                            UserUtils.updateToken(this@SplashScreenActivity, token)
+                            Log.d("TOKEN", token)
+                        } else {
+                            Toast.makeText(
+                                this@SplashScreenActivity,
+                                "Failed to get FCM token ${task.exception?.message}",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+
                 checkUserFromFirebase()
             } else {
                 showLoginLayout()
@@ -115,7 +135,7 @@ class SplashScreenActivity : AppCompatActivity() {
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
-                       val model = snapshot.getValue(DriverInfoModel::class.java)
+                        val model = snapshot.getValue(DriverInfoModel::class.java)
                         goToHomeActivity(model!!)
                     } else {
                         showRegisterUserLayout()
@@ -132,13 +152,13 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun goToHomeActivity(model: DriverInfoModel) {
         Constants.currentUser = model
-        startActivity(Intent(this@SplashScreenActivity,HomeActivity::class.java))
+        startActivity(Intent(this@SplashScreenActivity, HomeActivity::class.java))
         finish()
     }
 
     private fun showRegisterUserLayout() {
         val builder = AlertDialog.Builder(this, R.style.DialogTheme)
-        val itemView = LayoutInflater.from(this).inflate(R.layout.register_layout, null,false)
+        val itemView = LayoutInflater.from(this).inflate(R.layout.register_layout, null, false)
 
         val edit_text_name =
             itemView.findViewById<View>(R.id.edit_text_first_name) as TextInputEditText
@@ -183,7 +203,8 @@ class SplashScreenActivity : AppCompatActivity() {
                     edit_text_name.text.toString(),
                     edit_text_last_name.text.toString(),
                     edit_text_phone_number.text.toString(),
-                    0.0
+                    0.0,
+                    ""
                 )
 
                 driverInfoRef.child(FirebaseAuth.getInstance().currentUser!!.uid)
