@@ -51,7 +51,6 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
 
     private lateinit var mapFragment: SupportMapFragment
 
-    private lateinit var locationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 

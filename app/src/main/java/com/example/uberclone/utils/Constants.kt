@@ -35,23 +35,23 @@ object Constants {
         if (intent != null)
             pendingIntent =
                 PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT)
-            val NOTIFICATION_CHANNEL_ID = "com.example.uberclone"
-            val notificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val NOTIFICATION_CHANNEL_ID = "com.example.uberclone"
+        val notificationManager =
+            context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val notificationChannel = NotificationChannel(
-                    NOTIFICATION_CHANNEL_ID, "Uber Clone",
-                    NotificationManager.IMPORTANCE_HIGH
-                )
-                notificationChannel.description = "Uber Clone"
-                notificationChannel.enableLights(true)
-                notificationChannel.lightColor = Color.RED
-                notificationChannel.vibrationPattern = longArrayOf(0, 1000, 500, 1000)
-                notificationChannel.enableVibration(true)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val notificationChannel = NotificationChannel(
+                NOTIFICATION_CHANNEL_ID, "Uber Clone",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationChannel.description = "Uber Clone"
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.RED
+            notificationChannel.vibrationPattern = longArrayOf(0, 1000, 500, 1000)
+            notificationChannel.enableVibration(true)
 
-                notificationManager.createNotificationChannel(notificationChannel)
-            }
+            notificationManager.createNotificationChannel(notificationChannel)
+        }
 
 
         val builder = NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
