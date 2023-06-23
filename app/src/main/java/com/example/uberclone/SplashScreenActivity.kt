@@ -92,7 +92,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
                 FirebaseMessaging.getInstance().token
                     .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
+                        if (task.isComplete) {
                             val token = task.result
                             UserUtils.updateToken(this@SplashScreenActivity, token)
                             Log.d("TOKEN", token)
