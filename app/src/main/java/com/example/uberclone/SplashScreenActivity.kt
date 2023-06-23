@@ -20,12 +20,9 @@ import com.example.uberclone.utils.Constants
 import com.example.uberclone.utils.UserUtils
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
-import com.google.android.gms.auth.api.Auth
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.iid.FirebaseInstanceIdReceiver
 import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
@@ -78,7 +75,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
     private fun init() {
         database = FirebaseDatabase.getInstance()
-        driverInfoRef = database.getReference(Constants.DRIVER_INFO_REFERENCE)
+        driverInfoRef = database.getReference(Constants.RIDER_INFO_REFERENCE)
 
         providers = Arrays.asList(
             AuthUI.IdpConfig.PhoneBuilder().build(),

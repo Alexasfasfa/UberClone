@@ -15,7 +15,7 @@ object UserUtils {
         updateData: Map<String, Any>
     ) {
         FirebaseDatabase.getInstance()
-            .getReference(Constants.DRIVER_INFO_REFERENCE)
+            .getReference(Constants.RIDER_INFO_REFERENCE)
             .child(FirebaseAuth.getInstance().currentUser?.uid!!)
             .updateChildren(updateData)
             .addOnSuccessListener {

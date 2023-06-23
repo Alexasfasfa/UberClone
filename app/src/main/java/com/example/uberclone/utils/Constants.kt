@@ -8,11 +8,11 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
-import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import com.example.uberclone.R
+import com.example.uberclone.models.DriverGeoModel
 import com.example.uberclone.models.DriverInfoModel
-import io.reactivex.rxjava3.core.Notification
+import com.google.android.gms.maps.model.Marker
 
 object Constants {
 
@@ -77,11 +77,19 @@ object Constants {
 
     }
 
+    fun buildName(firstName: String, lastName: String): String {
+        return StringBuilder(firstName).append(" ").append(lastName).toString()
+    }
+
+    val markerList: MutableMap<String, Marker> = HashMap()
+    val DRIVER_INFO_REFERNCE: String = "DriverInfo"
+    val driversFound: MutableSet<DriverGeoModel> = HashSet()
+    val DRIVER_LOCATION_REFERENCE: String = "Driverlocation"
     val NOTI_BODY: String = "body"
     val NOTI_TITLE = "title"
     val TOKEN_REFERENCE = "Token"
     var currentUser: DriverInfoModel? = null
 
-    const val DRIVER_INFO_REFERENCE = "DriverInfo"
-    const val DRIVERS_LOCATION_REFERENCE = "DriversLocation"
+    const val RIDER_INFO_REFERENCE = "DriverInfo"
+    const val RIDERS_LOCATION_REFERENCE = "DriversLocation"
 }

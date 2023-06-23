@@ -17,11 +17,11 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import com.example.uberclone.R
 import com.example.uberclone.SplashScreenActivity
 import com.example.uberclone.databinding.ActivityHomeBinding
-import com.example.uberclone.models.DriverInfoModel
 import com.example.uberclone.utils.Constants
 import com.example.uberclone.utils.UserUtils
 import com.google.android.gms.tasks.Task
@@ -87,26 +87,29 @@ class HomeActivity : AppCompatActivity() {
 
 
         navView.setNavigationItemSelectedListener { it ->
-            val builder = AlertDialog.Builder(this@HomeActivity)
-            builder.setTitle("Sing out")
-            builder.setMessage("Do you really want to sing out?")
-                .setNegativeButton("CANCEL"){dialog, _ -> dialog.dismiss()}
-                .setPositiveButton("SING OUT") { dialog, _, ->
-                    FirebaseAuth.getInstance().signOut()
-                    val intent = Intent(this@HomeActivity, SplashScreenActivity::class.java)
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                    startActivity(intent)
-                    finish()
-                }.setCancelable(false)
+            if (it.itemId == R.id.nav_sing_out)  {
+                val builder = AlertDialog.Builder(this@HomeActivity)
+                builder.setTitle("Sing out")
+                builder.setMessage("Do you really want to sing out?")
+                    .setNegativeButton("CANCEL") { dialog, _ -> dialog.dismiss() }
+                    .setPositiveButton("SING OUT") { _, _, ->
+                        FirebaseAuth.getInstance().signOut()
+                        val intent = Intent(this@HomeActivity, SplashScreenActivity::class.java)
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                        startActivity(intent)
+                        finish()
+                    }.setCancelable(false)
 
-            val dialog = builder.create()
-            dialog.setOnShowListener {
-                dialog.getButton(AlertDialog.BUTTON_POSITIVE)
-                    .setTextColor(resources.getColor(android.R.color.holo_red_dark))
-                dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
-                    .setTextColor(resources.getColor(com.firebase.ui.auth.R.color.colorAccent))
+                val dialog = builder.create()
+                dialog.setOnShowListener {
+                    dialog.getButton(AlertDialog.BUTTON_POSITIVE)
+                        .setTextColor(resources.getColor(android.R.color.holo_red_dark))
+                    dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
+                        .setTextColor(resources.getColor(com.firebase.ui.auth.R.color.colorAccent))
+                }
+                dialog.show()
             }
-            dialog.show()
+            drawerLayout.closeDrawer(GravityCompat.START)
             true
         }
 
